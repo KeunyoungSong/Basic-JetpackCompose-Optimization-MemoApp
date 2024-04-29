@@ -79,7 +79,6 @@ fun AddMemo(memoList: SnapshotStateList<Memo>) {
 			.wrapContentWidth()
 			.fillMaxHeight()) {
 			Text("ADD\n$count")
-			count++
 		}
 	}
 }
