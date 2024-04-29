@@ -21,6 +21,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -44,7 +45,7 @@ fun HomeScreen(
 				homeState.showContent(it)
 			}
 			
-			Column { 
+			Column {
 				AddMemo(memoList = memoList)
 				MemoList(onClickAction = onClickAction, memoList = memoList)
 			}
@@ -85,8 +86,8 @@ fun ColumnScope.MemoList(
 	memoList: SnapshotStateList<Memo>
 ) {
 	LazyColumn(modifier = Modifier.weight(1f)) {
-		
-		itemsIndexed(items = memoList) { index, memo ->
+
+		itemsIndexed(items = memoList, key = { index, item -> item.id }) { index, memo ->
 			Card(
 				modifier = Modifier
 					.height(100.dp)
@@ -100,6 +101,23 @@ fun ColumnScope.MemoList(
 				Text(text = memo.text, modifier = Modifier.fillMaxSize())
 			}
 		}
-		
+
 	}
+	
+//	for(memo in memoList){
+//		key(memo.id){
+//			Card(
+//				modifier = Modifier
+//					.height(100.dp)
+//					.background(Color.White)
+//					.padding(horizontal = 16.dp, vertical = 8.dp)
+//					.fillMaxWidth(),
+//				onClick = {
+//					onClickAction(memo.id)
+//				},                // 배경색 지정
+//			) {
+//				Text(text = memo.text, modifier = Modifier.fillMaxSize())
+//			}
+//		}
+//	}
 }
