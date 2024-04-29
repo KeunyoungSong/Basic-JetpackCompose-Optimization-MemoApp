@@ -86,7 +86,7 @@ fun ColumnScope.MemoList(
 ) {
 	LazyColumn(modifier = Modifier.weight(1f)) {
 		
-		itemsIndexed(items = memoList, key = { index, item -> item.id }) { index, memo ->
+		itemsIndexed(items = memoList) { index, memo ->
 			Card(
 				modifier = Modifier
 					.height(100.dp)
