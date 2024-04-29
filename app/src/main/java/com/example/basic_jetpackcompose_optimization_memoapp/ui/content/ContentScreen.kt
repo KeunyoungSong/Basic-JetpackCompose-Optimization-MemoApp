@@ -1,5 +1,6 @@
 package com.example.basic_jetpackcompose_optimization_memoapp.ui.content
 
+import android.util.Log
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -33,9 +34,13 @@ private val HzPadding = Modifier.padding(horizontal = 24.dp)
 
 @Composable
 fun ContentScreen(memoId: Int) {
-	val memo = remember(memos) { memos.single { it.id == memoId } }
+	val memo = remember(memos) { memos.singleOrNull { it.id == memoId } } ?: run {
+		Log.d("ContentScreen", "No memo found with ID: $memoId")
+		return
+	}
 	
-	Box(modifier = Modifier.fillMaxSize()){
+	
+	Box(modifier = Modifier.fillMaxSize()) {
 		val scroll = rememberScrollState(0)
 		Body(scroll)
 		Title(memo.text, scroll.value)
@@ -44,15 +49,14 @@ fun ContentScreen(memoId: Int) {
 
 @Composable
 fun Body(scroll: ScrollState) {
-	Column(modifier = Modifier.background(Color.White)){
+	Column(modifier = Modifier.background(Color.White)) {
 		Spacer(
 			modifier = Modifier
 				.fillMaxWidth()
 				.height(MaxTitleOffset)
 		)
 		Column(
-			modifier = Modifier
-				.verticalScroll(scroll)
+			modifier = Modifier.verticalScroll(scroll)
 		) {
 			Surface(Modifier.fillMaxWidth()) {
 				Column {
@@ -72,20 +76,21 @@ fun Body(scroll: ScrollState) {
 }
 
 @Composable
-private fun Title(memoText: String, scroll: Int) {
+private fun Title(
+	memoText: String,
+	scroll: Int
+) {
 	val maxOffset = with(LocalDensity.current) { MaxTitleOffset.toPx() }
 	val minOffset = with(LocalDensity.current) { MinTitleOffset.toPx() }
 	
-	Column(
-		modifier = Modifier
-			.heightIn(min = MaxTitleOffset)
-			.offset {
-				val offset = (maxOffset - scroll).coerceAtLeast(minOffset)
-				IntOffset(x = 0, y = offset.toInt())
-			}
-			.fillMaxWidth()
-			.background(Color.White)
-	) {
+	Column(modifier = Modifier
+		.heightIn(min = MaxTitleOffset)
+		.offset {
+			val offset = (maxOffset - scroll).coerceAtLeast(minOffset)
+			IntOffset(x = 0, y = offset.toInt())
+		}
+		.fillMaxWidth()
+		.background(Color.White)) {
 		Text(
 			text = memoText,
 			style = MaterialTheme.typography.bodyMedium,
