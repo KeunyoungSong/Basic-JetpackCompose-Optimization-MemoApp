@@ -21,9 +21,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -56,6 +58,7 @@ fun HomeScreen(
 @Composable
 fun AddMemo(memoList: SnapshotStateList<Memo>) {
 	val inputValue = remember { mutableStateOf("") }
+	var count by remember { mutableStateOf(0)}
 	
 	Row(
 		modifier = Modifier
@@ -71,10 +74,12 @@ fun AddMemo(memoList: SnapshotStateList<Memo>) {
 		Button(onClick = {
 			memoList.add(index = 0, Memo(memoList.size, inputValue.value))
 			inputValue.value = ""
+			count++
 		}, modifier = Modifier
 			.wrapContentWidth()
 			.fillMaxHeight()) {
-			Text("ADD")
+			Text("ADD\n$count")
+			count++
 		}
 	}
 }
