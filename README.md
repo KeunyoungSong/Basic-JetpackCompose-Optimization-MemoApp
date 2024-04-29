@@ -1,0 +1,1 @@
+Issue 1) ContentScreen 에서 스크롤을 하면 layout inspector 의 Recomposition Counts 에서 리컴포지션 횟수가 빠르게 증가하는 상황 확인
